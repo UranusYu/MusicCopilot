@@ -35,15 +35,14 @@ class MusicCoplilotAgent:
         os.makedirs(self.src_fold, exist_ok=True)
 
         self._init_logger()
-
-        self._init_semantic_kernel()
-        if mode == "cli":
-            self._init_backend_from_env()
+        self.kernel = sk.Kernel()
 
         self.task_map = get_task_map()
         self.pipes = init_plugins(self.config)
-        self._init_task_context()
-        self._init_tool_context()
+
+        if mode == "cli":
+            self._init_backend_from_env()
+
 
     def _init_logger(self):
         self.logger = logging.getLogger(__name__)
@@ -64,8 +63,6 @@ class MusicCoplilotAgent:
             self.logger.addHandler(filehandler)
 
     def _init_semantic_kernel(self):
-        self.kernel = sk.Kernel()
-
         skills_directory = os.path.join(os.path.dirname(os.path.realpath(__file__)), "skills")
         copilot_funcs = self.kernel.import_semantic_skill_from_directory(skills_directory, "MusicCopilot")
         
@@ -105,10 +102,18 @@ class MusicCoplilotAgent:
         else:
             api_key, org_id = sk.openai_settings_from_dot_env()
             self.kernel.add_text_completion_service("dv", OpenAITextCompletion(self.config["model"], api_key, org_id))
+        
+        self._init_semantic_kernel()
+        self._init_task_context()
+        self._init_tool_context()
 
     def _init_backend_from_input(self, api_key):
         # Only OpenAI api is supported in Gradio demo
         self.kernel.add_text_completion_service("dv", OpenAITextCompletion(self.config["model"], api_key, ""))
+        
+        self._init_semantic_kernel()
+        self._init_task_context()
+        self._init_tool_context()
 
     def _init_task_context(self):
         self.task_context["tasks"] = json.dumps(list(self.task_map.keys()))
