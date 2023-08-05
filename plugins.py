@@ -343,7 +343,10 @@ class Spotify(BaseToolkit):
             query = ["remaster"]
             for key in arg:
                 if key in ["track", "album", "artist", "genre"]:
-                    value = " ".join(arg[key])
+                    if isinstance(arg[key], list):
+                        value = " ".join(arg[key])
+                    else: 
+                        value = arg[key]
                     query.append(f"{key}:{value}")
 
             if tgt == "playlist":

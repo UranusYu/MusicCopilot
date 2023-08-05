@@ -71,7 +71,7 @@ def bot(messages):
     add_message(message, "assistant")
     messages[-1][1] = message
     for audio_url in audio_urls:
-        if not audio_url.startswith("http") and not audio_urls.startswith(f"{agent.config['src_fold']}"):
+        if not audio_url.startswith("http") and not audio_url.startswith(f"{agent.config['src_fold']}"):
             audio_url = f"{agent.config['src_fold']}/{audio_url}"
         messages = messages + [((None, (audio_url,)))]
 
