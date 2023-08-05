@@ -14,9 +14,9 @@ To be uploaded
 
 ## Features
 
-- Accessibility: Music Copilot dynamically selects the most suitable methods for each music-related task.
-- Unity:  Music Copilot bridges the gap between music and text by unifying a wide range of methods from diverse sources, ranging from Huggingface models, Github projects to Web APIs.
-- Modularity: Music Copilot is highly extensible so that users can easily expand its functionality by adding new functions.
+- Accessibility: Music Copilot dynamically selects the most appropriate methods for each music-related task.
+- Unity: Music Copilot unifies a wide array of tools into a single system, incorporating Huggingface models, GitHub projects, and Web APIs.
+- Modularity: Music Copilot offers high modularity, allowing users to effortlessly enhance its capabilities by integrating new functions.
 
 ## Installation
 
@@ -100,11 +100,23 @@ mkdir violin; gsutil cp gs://ddsp/models/timbre_transfer_colab/2021-07-08/solo_v
 mkdir flute; gsutil cp gs://ddsp/models/timbre_transfer_colab/2021-07-08/solo_flute_ckpt/* flute/
 ```
 
-To use sound synthesis, Download [MS Basic.sf3](https://github.com/musescore/MuseScore/tree/master/share/sound) to the main folder.
+To use audio synthesis, please download [MS Basic.sf3](https://github.com/musescore/MuseScore/tree/master/share/sound) and place it in the main folder.
 
 ## Usage
 
 Change the *config.yaml* file to ensure that it is suitable for your application scenario.
+
+```yaml
+# optional tools
+huggingface:
+  token: YOUR_HF_TOKEN
+spotify:
+  client_id: YOUR_CLIENT_ID
+  client_secret: YOUR_CLIENT_SECRET
+google:
+  api_key: YOUR_API_KEY
+  custom_search_engine_id: YOUR_SEARCH_ENGINE_ID
+```
 
 - Set your [Hugging Face token](https://huggingface.co/settings/tokens).
 - Set your [Spotify Client ID and Secret](https://developer.spotify.com/dashboard), according to the [doc](https://developer.spotify.com/documentation/web-api).
@@ -124,9 +136,9 @@ AZURE_OPENAI_ENDPOINT=""
 AZURE_OPENAI_API_KEY=""
 ```
 
-If you use Azure OpenAI, please pay attention to change *use_azure_openai* in config.
+If you use Azure OpenAI, please pay attention to change *use_azure_openai* in *config.yaml*.
 
-And now you can run the agent:
+And now you can run the agent by:
 
 ```bash
 python agent.py --config config.yaml
@@ -140,7 +152,7 @@ We also provide gradio interface
 python gradio_agent.py --config config.yaml
 ```
 
-No need to set .env file when selecting Gradio interaction, but it supports OpenAI key only.
+No .env file setup is required for Gradio interaction selection, but it does support only the OpenAI key.
 
 
 ## Citation
